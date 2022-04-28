@@ -32,16 +32,25 @@
           </b-card>
           <hr/>
         </div>
-        <a v-if="this.logged_in" class="btn btn-primary btn-xl text-uppercase" @click="logout">
-          Disconnect
-        </a>
-        <a v-if="!this.logged_in" class="btn btn-primary btn-xl text-uppercase" @click="getLoginUri">
-          Connect
-        </a>
+        <div v-if="this.logged_in">
+          <a class="btn btn-info btn-xl text-uppercase" @click="sync">
+            Sync
+          </a>
+          <br/>
+          <br/>
+          <a class="btn btn-danger btn-xl text-uppercase" @click="logout">
+            Disconnect
+          </a>
+        </div>
+        <div v-if="!this.logged_in">
+          <a class="btn btn-primary btn-xl text-uppercase" @click="getLoginUri">
+            Connect
+          </a>
+        </div>
       </div>
     </section>
 
-    <section class="page-section bg-light" id="activities">
+    <section class="page-section bg-light" id="activities" v-if="load_activity">
       <div class="container">
         <b-container class="mb-5">
           <ActivityList />
@@ -79,9 +88,13 @@ export default {
       login_uri: 'login_uri',
       logged_in: 'logged_in'
     }),
+    ...mapGetters('sync', {
+      synced: 'synced'
+    }),
   },
   data() {
     return {
+      load_activity: false
     }
   },
   async created() {
@@ -99,6 +112,7 @@ export default {
   },
   async mounted() {
     await this.checkLogin()
+    this.loadActivities()
   },
   methods: {
     async getLoginUri() {
@@ -125,6 +139,18 @@ export default {
       } catch (err) {
         return
       }
+    },
+    async sync() {
+      try {
+        await this.$store.dispatch('sync/sync')
+
+        if (this.synced) alert('Your activity list synced')
+      } catch (err) {
+        return
+      }
+    },
+    loadActivities() {
+      this.load_activity = true
     }
   },
 }

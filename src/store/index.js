@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import authentication from './modules/auth'
 import activity from './modules/activity'
+import sync from './modules/sync'
 
 Vue.use(Vuex)
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
   getters: {},
   modules: {
     authentication,
-    activity
+    activity,
+    sync
   }
 })

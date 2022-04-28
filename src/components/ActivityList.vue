@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="activities && activities.length > 0">
-    <Table v-model="activities" :fields="fields"></Table>
+      <Table v-model="activities" :fields="fields"></Table>
     </template>
     <b-button v-if="loading" variant="primary" disabled>
       <b-spinner small type="grow"></b-spinner>
@@ -17,7 +17,6 @@ import Table from './Table.vue'
 export default {
   name: 'ActivityList',
   props: {
-    athlete_id: String,
     type: String
   },
   components: {
@@ -51,6 +50,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('authentication', {
+      athlete: 'athlete',
+    }),
     ...mapGetters('activity', {
       activities: 'activities',
       activity: 'activity'
@@ -60,14 +62,14 @@ export default {
     async getActivities() {
       this.loading = true
       await this.$store.dispatch('activity/getActivities', {
-        athlete_id: this.athlete_id,
+        athlete_id: this.athlete.athlete_id,
         type: this.type,
       })
 
       this.loading = false
     },
   },
-  async beforeMount() {
+  async mounted() {
     await this.getActivities()
   }
 }
