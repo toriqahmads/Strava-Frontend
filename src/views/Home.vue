@@ -23,7 +23,7 @@
             <b-card-text>
               <b-list-group>
                 <b-list-group-item>Name: {{ athlete.firstname }} {{ athlete.lastname }}</b-list-group-item>
-                <b-list-group-item>Gender: {{ athlete.sex === 'M' ? 'Male' : 'Female' }}</b-list-group-item>
+                <b-list-group-item>Gender: {{ !athlete.sex || athlete.sex === null ? 'Unknown' : athlete.sex === 'M' ? 'Male' : 'Female' }}</b-list-group-item>
                 <b-list-group-item>Followers: {{ athlete.followers }}</b-list-group-item>
                 <b-list-group-item>Friends: {{ athlete.friends }}</b-list-group-item>
                 <b-list-group-item>Premium: {{ athlete.premium ? 'Yes' : 'No' }}</b-list-group-item>
